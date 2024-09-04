@@ -1,0 +1,385 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-icon name="arrow-back-outline" class="atras" (click) ="volver()" color="secondary"></ion-icon>
+    <ion-icon *ngIf="!buscarRecurso" name="search-outline" class="buscar" (click) ="buscar()" color="secondary"></ion-icon>
+    <ion-icon *ngIf="buscarRecurso" name="close-outline" class="buscar" (click) ="desbuscar()" color="secondary"></ion-icon>
+    <ion-title><small>{{ clase.nombre }}-{{ bloque.nombre }}</small></ion-title>
+  </ion-toolbar>
+  <ion-searchbar #searchBar *ngIf="buscarRecurso" placeholder="Referencia del recurso" (ionInput)="accionBusqueda(searchBar.value)" inputmode="search" autocorrect="off" autocomplite="off" animated></ion-searchbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="spinner" id="contenedorSpinner">
+    <ion-item color="primary" class="botones">
+      <ion-spinner color="secondary" name="crescent"></ion-spinner>
+    </ion-item>
+  </div>
+  <div *ngIf="!spinner" id="contenedor">
+    <div *ngFor="let cuatro of listaCuatro">
+      <ion-item color="primary" class="botonesIzquierda ion-no-padding">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="5" class="card-image" (click) ="seleccionRecurso(cuatro.recurso0.id)">
+              <img alt="" [src]="urlImagen(cuatro.recurso0.id)">
+            </ion-col>
+            <ion-col size="7" class="texto">
+              <ion-label class="ion-text-wrap titulo" (click) ="seleccionRecurso(cuatro.recurso0.id)"><b>{{cuatro.recurso0.nombre}}</b></ion-label>
+              <div class="instrucciones">
+                <ion-label *ngIf="cuatro.recurso0.nombre.length<=LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTexto" (click) ="seleccionRecurso(cuatro.recurso0.id)"><small>{{cuatro.recurso0.instrucciones}}</small></ion-label>
+                <ion-label *ngIf="cuatro.recurso0.nombre.length>LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTextoCorto" (click) ="seleccionRecurso(cuatro.recurso0.id)"><small>{{cuatro.recurso0.instrucciones}}</small></ion-label>
+              </div>
+              <ion-item class="iconos"  color=transparent>
+                <ion-button *ngIf="cuatro.recurso0.instrucciones.length>LONGITUD_TOPE || (cuatro.recurso0.nombre.length>LONGITUD_TOPE_TITULO && cuatro.recurso0.instrucciones.length>LONGITUD_TOPE_2)"  color="secondary" (click) ="mostrarTexto(cuatro.recurso0.id)">...</ion-button>
+                <ion-icon *ngIf="cuatro.recurso0.enlaceVideo && '' != cuatro.recurso0.enlaceVideo" name="play-circle-outline" (click) ="seleccionVideo(cuatro.recurso0.id)"></ion-icon>
+                <ion-icon *ngIf="cuatro.recurso0.recursoAdaptado && '' != cuatro.recurso0.recursoAdaptado" name="body-outline" (click) ="seleccionRecurso(cuatro.recurso0.recursoAdaptado)"></ion-icon>
+                <ion-icon *ngIf="!cuatro.recurso0.favorito" name="heart-outline"></ion-icon>
+                <ion-icon *ngIf="cuatro.recurso0.favorito" name="heart" color="danger"></ion-icon>
+                <ion-icon *ngIf="!cuatro.recurso0.realizado" name="checkmark-done" ></ion-icon>
+                <ion-icon *ngIf="cuatro.recurso0.realizado" name="checkmark-done" color="secondary"></ion-icon>
+                <ion-icon *ngIf="!cuatro.recurso0.visto" name="eye-off-outline"></ion-icon>
+                <ion-icon *ngIf="cuatro.recurso0.visto" name="eye" color="secondary"></ion-icon>
+              </ion-item>
+            </ion-col>
+            <!-- <ion-col size="7" class="textoTablet">
+              <ion-label class="ion-text-wrap titulo" (click) ="seleccionRecurso(cuatro.recurso0.id)"><h2><b>{{cuatro.recurso0.nombre}}</b></h2></ion-label>
+              <div class="instrucciones">
+                <ion-label *ngIf="cuatro.recurso0.nombre.length<=LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTexto" (click) ="seleccionRecurso(cuatro.recurso0.id)">{{cuatro.recurso0.instrucciones}}</ion-label>
+                <ion-label *ngIf="cuatro.recurso0.nombre.length>LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTextoCorto" (click) ="seleccionRecurso(cuatro.recurso0.id)">{{cuatro.recurso0.instrucciones}}</ion-label>
+              </div>
+              <ion-item class="iconos"  color=transparent>
+                <ion-button *ngIf="cuatro.recurso0.instrucciones.length>LONGITUD_TOPE || (cuatro.recurso0.nombre.length>LONGITUD_TOPE_TITULO && cuatro.recurso0.instrucciones.length>LONGITUD_TOPE_2)"  color="secondary" (click) ="mostrarTexto(cuatro.recurso0.id)">...</ion-button>
+                <ion-icon *ngIf="cuatro.recurso0.enlaceVideo && '' != cuatro.recurso0.enlaceVideo" name="play-circle-outline" size="large" (click) ="seleccionVideo(cuatro.recurso0.id)"></ion-icon>
+                <ion-icon *ngIf="cuatro.recurso0.recursoAdaptado && '' != cuatro.recurso0.recursoAdaptado" name="body-outline" size="large" (click) ="seleccionRecurso(cuatro.recurso0.recursoAdaptado)"></ion-icon>
+                <ion-icon *ngIf="!cuatro.recurso0.favorito" name="heart-outline" size="large"></ion-icon>
+                <ion-icon *ngIf="cuatro.recurso0.favorito" name="heart" size="large" color="danger"></ion-icon>
+                <ion-icon *ngIf="!cuatro.recurso0.realizado" name="checkmark-done" size="large"></ion-icon>
+                <ion-icon *ngIf="cuatro.recurso0.realizado" name="checkmark-done" size="large" color="secondary"></ion-icon>
+                <ion-icon *ngIf="!cuatro.recurso0.visto" name="eye-off-outline" size="large"></ion-icon>
+                <ion-icon *ngIf="cuatro.recurso0.visto" name="eye" size="large" color="secondary"></ion-icon>
+              </ion-item>
+            </ion-col> -->
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item color="secondary" class="botonesDerecha ion-no-padding">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="7" class="texto">
+              <ion-label class="ion-text-wrap titulo" (click) ="seleccionRecurso(cuatro.recurso1.id)"><b>{{cuatro.recurso1.nombre}}</b></ion-label>
+              <div class="instrucciones">
+                <ion-label *ngIf="cuatro.recurso1.nombre.length<=LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTexto" (click) ="seleccionRecurso(cuatro.recurso1.id)"><small>{{cuatro.recurso1.instrucciones}}</small></ion-label>
+                <ion-label *ngIf="cuatro.recurso1.nombre.length>LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTextoCorto" (click) ="seleccionRecurso(cuatro.recurso1.id)"><small>{{cuatro.recurso1.instrucciones}}</small></ion-label>
+              </div>
+              <ion-item class="iconos" color=transparent>
+                <ion-button *ngIf="cuatro.recurso1.instrucciones.length>LONGITUD_TOPE || (cuatro.recurso1.nombre.length>LONGITUD_TOPE_TITULO && cuatro.recurso1.instrucciones.length>LONGITUD_TOPE_2)" (click) ="mostrarTexto(cuatro.recurso1.id)">...</ion-button>
+                <ion-icon *ngIf="cuatro.recurso1.enlaceVideo && '' != cuatro.recurso1.enlaceVideo" name="play-circle-outline" (click) ="seleccionVideo(cuatro.recurso1.id)"></ion-icon>
+                <ion-icon *ngIf="cuatro.recurso1.recursoAdaptado && '' != cuatro.recurso1.recursoAdaptado" name="body-outline" (click) ="seleccionRecurso(cuatro.recurso1.recursoAdaptado)"></ion-icon>
+                <ion-icon *ngIf="!cuatro.recurso1.favorito" name="heart-outline"></ion-icon>
+                <ion-icon *ngIf="cuatro.recurso1.favorito" name="heart" color="danger"></ion-icon>
+                <ion-icon *ngIf="!cuatro.recurso1.realizado" name="checkmark-done" ></ion-icon>
+                <ion-icon *ngIf="cuatro.recurso1.realizado" name="checkmark-done" color="primary"></ion-icon>
+                <ion-icon *ngIf="!cuatro.recurso1.visto" name="eye-off-outline"></ion-icon>
+                <ion-icon *ngIf="cuatro.recurso1.visto" name="eye" color="primary"></ion-icon>
+              </ion-item>
+            </ion-col>
+            <ion-col size="5" class="card-image" (click) ="seleccionRecurso(cuatro.recurso1.id)">
+              <img alt="" [src]="urlImagen(cuatro.recurso1.id)">
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item color="tertiary" class="botonesIzquierda ion-no-padding">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="5" class="card-image" (click) ="seleccionRecurso(cuatro.recurso2.id)">
+              <img alt="" [src]="urlImagen(cuatro.recurso2.id)">
+            </ion-col>
+            <ion-col size="7" class="texto">
+              <ion-label class="ion-text-wrap titulo" (click) ="seleccionRecurso(cuatro.recurso2.id)"><b>{{cuatro.recurso2.nombre}}</b></ion-label>
+              <div class="instrucciones">
+                <ion-label *ngIf="cuatro.recurso2.nombre.length<=LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTexto" (click) ="seleccionRecurso(cuatro.recurso2.id)"><small>{{cuatro.recurso2.instrucciones}}</small></ion-label>
+                <ion-label *ngIf="cuatro.recurso2.nombre.length>LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTextoCorto" (click) ="seleccionRecurso(cuatro.recurso2.id)"><small>{{cuatro.recurso2.instrucciones}}</small></ion-label>
+              </div>
+              <ion-item  class="iconos" color=transparent>
+                <ion-button *ngIf="cuatro.recurso2.instrucciones.length>LONGITUD_TOPE || (cuatro.recurso2.nombre.length>LONGITUD_TOPE_TITULO && cuatro.recurso2.instrucciones.length>LONGITUD_TOPE_2)" (click) ="mostrarTexto(cuatro.recurso2.id)">...</ion-button>
+                <ion-icon *ngIf="cuatro.recurso2.enlaceVideo && '' != cuatro.recurso2.enlaceVideo" name="play-circle-outline" (click) ="seleccionVideo(cuatro.recurso2.id)"></ion-icon>
+                <ion-icon *ngIf="cuatro.recurso2.recursoAdaptado && '' != cuatro.recurso2.recursoAdaptado" name="body-outline" (click) ="seleccionRecurso(cuatro.recurso2.recursoAdaptado)"></ion-icon>
+                <ion-icon *ngIf="!cuatro.recurso2.favorito" name="heart-outline"></ion-icon>
+                <ion-icon *ngIf="cuatro.recurso2.favorito" name="heart" color="danger"></ion-icon>
+                <ion-icon *ngIf="!cuatro.recurso2.realizado" name="checkmark-done" ></ion-icon>
+                <ion-icon *ngIf="cuatro.recurso2.realizado" name="checkmark-done" color="primary"></ion-icon>
+                <ion-icon *ngIf="!cuatro.recurso2.visto" name="eye-off-outline"></ion-icon>
+                <ion-icon *ngIf="cuatro.recurso2.visto" name="eye" color="primary"></ion-icon>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item color="success" class="botonesDerecha ion-no-padding">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="7" class="texto">
+              <ion-label class="ion-text-wrap titulo" (click) ="seleccionRecurso(cuatro.recurso3.id)"><b>{{cuatro.recurso3.nombre}}</b></ion-label>
+              <div class="instrucciones">
+                <ion-label *ngIf="cuatro.recurso3.nombre.length<=LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTexto" (click) ="seleccionRecurso(cuatro.recurso3.id)"><small>{{cuatro.recurso3.instrucciones}}</small></ion-label>
+                <ion-label *ngIf="cuatro.recurso3.nombre.length>LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTextoCorto" (click) ="seleccionRecurso(cuatro.recurso3.id)"><small>{{cuatro.recurso3.instrucciones}}</small></ion-label>
+              </div>
+              <ion-item  class="iconos" color=transparent>
+                <ion-button *ngIf="cuatro.recurso3.instrucciones.length>LONGITUD_TOPE || (cuatro.recurso3.nombre.length>LONGITUD_TOPE_TITULO && cuatro.recurso3.instrucciones.length>LONGITUD_TOPE_2)" color="secondary" (click) ="mostrarTexto(cuatro.recurso3.id)">...</ion-button>
+                <ion-icon *ngIf="cuatro.recurso3.enlaceVideo && '' != cuatro.recurso3.enlaceVideo" name="play-circle-outline" (click) ="seleccionVideo(cuatro.recurso3.id)"></ion-icon>
+                <ion-icon *ngIf="cuatro.recurso3.recursoAdaptado && '' != cuatro.recurso3.recursoAdaptado" name="body-outline" (click) ="seleccionRecurso(cuatro.recurso3.recursoAdaptado)"></ion-icon>
+                <ion-icon *ngIf="!cuatro.recurso3.favorito" name="heart-outline"></ion-icon>
+                <ion-icon *ngIf="cuatro.recurso3.favorito" name="heart" color="danger"></ion-icon>
+                <ion-icon *ngIf="!cuatro.recurso3.realizado" name="checkmark-done" ></ion-icon>
+                <ion-icon *ngIf="cuatro.recurso3.realizado" name="checkmark-done" color="secondary"></ion-icon>
+                <ion-icon *ngIf="!cuatro.recurso3.visto" name="eye-off-outline"></ion-icon>
+                <ion-icon *ngIf="cuatro.recurso3.visto" name="eye" color="secondary"></ion-icon>
+              </ion-item>
+            </ion-col>
+            <ion-col size="5" class="card-image" (click) ="seleccionRecurso(cuatro.recurso3.id)">
+              <img alt="" [src]="urlImagen(cuatro.recurso3.id)">
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </div>
+    <div *ngIf="resto == 1">
+      <ion-item color="primary" class="botonesIzquierda ion-no-padding">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="5" class="card-image" (click) ="seleccionRecurso(cuatroResto.recurso0.id)">
+              <img alt="" [src]="urlImagen(cuatroResto.recurso0.id)">
+            </ion-col>
+            <ion-col size="7" class="texto">
+              <ion-label class="ion-text-wrap titulo" (click) ="seleccionRecurso(cuatroResto.recurso0.id)"><b>{{cuatroResto.recurso0.nombre}}</b></ion-label>
+              <div class="instrucciones">
+                <ion-label *ngIf="cuatroResto.recurso0.nombre.length<=LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTexto" (click) ="seleccionRecurso(cuatroResto.recurso0.id)"><small>{{cuatroResto.recurso0.instrucciones}}</small></ion-label>
+                <ion-label *ngIf="cuatroResto.recurso0.nombre.length>LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTextoCorto" (click) ="seleccionRecurso(cuatroResto.recurso0.id)"><small>{{cuatroResto.recurso0.instrucciones}}</small></ion-label>
+              </div>
+              <ion-item  class="iconos" color=transparent>
+                <ion-button *ngIf="cuatroResto.recurso0.instrucciones.length>LONGITUD_TOPE || (cuatroResto.recurso0.nombre.length>LONGITUD_TOPE_TITULO && cuatroResto.recurso0.instrucciones.length>LONGITUD_TOPE_2)" color="secondary" (click) ="mostrarTexto(cuatroResto.recurso0.id)">...</ion-button>
+                <ion-icon *ngIf="cuatroResto.recurso0.enlaceVideo && '' != cuatroResto.recurso0.enlaceVideo" name="play-circle-outline" (click) ="seleccionVideo(cuatroResto.recurso0.id)"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.recursoAdaptado && '' != cuatroResto.recurso0.recursoAdaptado" name="body-outline" (click) ="seleccionRecurso(cuatroResto.recurso0.recursoAdaptado)"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso0.favorito" name="heart-outline"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.favorito" name="heart" color="danger"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso0.realizado" name="checkmark-done" ></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.realizado" name="checkmark-done" color="secondary"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso0.visto" name="eye-off-outline"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.visto" name="eye" color="secondary"></ion-icon>
+              </ion-item>
+            </ion-col>
+            <!-- <ion-col size="7" class="textoTablet">
+              <ion-label class="ion-text-wrap titulo" (click) ="seleccionRecurso(cuatroResto.recurso0.id)"><h2><b>{{cuatroResto.recurso0.nombre}}</b></h2></ion-label>
+              <div class="instrucciones">
+                <ion-label *ngIf="cuatroResto.recurso0.nombre.length<=LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTexto" (click) ="seleccionRecurso(cuatroResto.recurso0.id)">{{cuatroResto.recurso0.instrucciones}}</ion-label>
+                <ion-label *ngIf="cuatroResto.recurso0.nombre.length>LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTextoCorto" (click) ="seleccionRecurso(cuatroResto.recurso0.id)">{{cuatroResto.recurso0.instrucciones}}</ion-label>
+              </div>
+              <ion-item  class="iconos" color=transparent>
+                <ion-button *ngIf="cuatroResto.recurso0.instrucciones.length>LONGITUD_TOPE || (cuatroResto.recurso0.nombre.length>LONGITUD_TOPE_TITULO && cuatroResto.recurso0.instrucciones.length>LONGITUD_TOPE_2)" color="secondary" (click) ="mostrarTexto(cuatroResto.recurso0.id)">...</ion-button>
+                <ion-icon *ngIf="cuatroResto.recurso0.enlaceVideo && '' != cuatroResto.recurso0.enlaceVideo" name="play-circle-outline" size="large" (click) ="seleccionVideo(cuatroResto.recurso0.id)"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.recursoAdaptado && '' != cuatroResto.recurso0.recursoAdaptado" name="body-outline" size="large" (click) ="seleccionRecurso(cuatroResto.recurso0.recursoAdaptado)"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso0.favorito" name="heart-outline" size="large"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.favorito" name="heart" size="large" color="danger"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso0.realizado" name="checkmark-done" size="large"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.realizado" name="checkmark-done" size="large" color="secondary"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso0.visto" name="eye-off-outline" size="large"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.visto" name="eye" size="large" color="secondary"></ion-icon>
+              </ion-item>
+            </ion-col> -->
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item color="secondary" class="botonesDerecha ion-no-padding">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="7" class="texto"></ion-col>
+            <ion-col size="5" class="card-image"></ion-col>
+          </ion-row>
+        </ion-grid>  
+      </ion-item>
+    </div>
+    <div *ngIf="resto == 2">
+      <ion-item color="primary" class="botonesIzquierda ion-no-padding">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="5" class="card-image" (click) ="seleccionRecurso(cuatroResto.recurso0.id)">
+              <img alt="" [src]="urlImagen(cuatroResto.recurso0.id)">
+            </ion-col>
+            <ion-col size="7" class="texto">
+              <ion-label class="ion-text-wrap titulo" (click) ="seleccionRecurso(cuatroResto.recurso0.id)"><b>{{cuatroResto.recurso0.nombre}}</b></ion-label>
+              <div class="instrucciones">
+                <ion-label *ngIf="cuatroResto.recurso0.nombre.length<=LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTexto" (click) ="seleccionRecurso(cuatroResto.recurso0.id)"><small>{{cuatroResto.recurso0.instrucciones}}</small></ion-label>
+                <ion-label *ngIf="cuatroResto.recurso0.nombre.length>LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTextoCorto" (click) ="seleccionRecurso(cuatroResto.recurso0.id)"><small>{{cuatroResto.recurso0.instrucciones}}</small></ion-label>
+              </div>
+              <ion-item  class="iconos" color=transparent>
+                <ion-button *ngIf="cuatroResto.recurso0.instrucciones.length>LONGITUD_TOPE || (cuatroResto.recurso0.nombre.length>LONGITUD_TOPE_TITULO && cuatroResto.recurso0.instrucciones.length>LONGITUD_TOPE_2)" color="secondary" (click) ="mostrarTexto(cuatroResto.recurso0.id)">...</ion-button>
+                <ion-icon *ngIf="cuatroResto.recurso0.enlaceVideo && '' != cuatroResto.recurso0.enlaceVideo" name="play-circle-outline" (click) ="seleccionVideo(cuatroResto.recurso0.id)"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.recursoAdaptado && '' != cuatroResto.recurso0.recursoAdaptado" name="body-outline" (click) ="seleccionRecurso(cuatroResto.recurso0.recursoAdaptado)"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso0.favorito" name="heart-outline"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.favorito" name="heart" color="danger"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso0.realizado" name="checkmark-done" ></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.realizado" name="checkmark-done" color="secondary"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso0.visto" name="eye-off-outline"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.visto" name="eye" color="secondary"></ion-icon>
+              </ion-item>
+            </ion-col>
+            <!-- <ion-col size="7" class="textoTablet">
+              <ion-label class="ion-text-wrap titulo" (click) ="seleccionRecurso(cuatroResto.recurso0.id)"><h2><b>{{cuatroResto.recurso0.nombre}}</b></h2></ion-label>
+              <div class="instrucciones">
+                <ion-label *ngIf="cuatroResto.recurso0.nombre.length<=LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTexto" (click) ="seleccionRecurso(cuatroResto.recurso0.id)">{{cuatroResto.recurso0.instrucciones}}</ion-label>
+                <ion-label *ngIf="cuatroResto.recurso0.nombre.length>LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTextoCorto" (click) ="seleccionRecurso(cuatroResto.recurso0.id)">{{cuatroResto.recurso0.instrucciones}}</ion-label>
+              </div>
+              <ion-item  class="iconos" color=transparent>
+                <ion-button *ngIf="cuatroResto.recurso0.instrucciones.length>LONGITUD_TOPE || (cuatroResto.recurso0.nombre.length>LONGITUD_TOPE_TITULO && cuatroResto.recurso0.instrucciones.length>LONGITUD_TOPE_2)" color="secondary" (click) ="mostrarTexto(cuatroResto.recurso0.id)">...</ion-button>
+                <ion-icon *ngIf="cuatroResto.recurso0.enlaceVideo && '' != cuatroResto.recurso0.enlaceVideo" name="play-circle-outline" size="large" (click) ="seleccionVideo(cuatroResto.recurso0.id)"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.recursoAdaptado && '' != cuatroResto.recurso0.recursoAdaptado" name="body-outline" size="large" (click) ="seleccionRecurso(cuatroResto.recurso0.recursoAdaptado)"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso0.favorito" name="heart-outline" size="large"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.favorito" name="heart" size="large" color="danger"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso0.realizado" name="checkmark-done" size="large"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.realizado" name="checkmark-done" size="large" color="secondary"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso0.visto" name="eye-off-outline" size="large"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.visto" name="eye" size="large" color="secondary"></ion-icon>
+              </ion-item>
+            </ion-col> -->
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item color="secondary" class="botonesDerecha ion-no-padding">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="7" class="texto">
+              <ion-label class="ion-text-wrap titulo" (click) ="seleccionRecurso(cuatroResto.recurso1.id)"><b>{{cuatroResto.recurso1.nombre}}</b></ion-label>
+              <div class="instrucciones">
+                <ion-label *ngIf="cuatroResto.recurso1.nombre.length<=LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTexto" (click) ="seleccionRecurso(cuatroResto.recurso1.id)"><small>{{cuatroResto.recurso1.instrucciones}}</small></ion-label>
+                <ion-label *ngIf="cuatroResto.recurso1.nombre.length>LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTextoCorto" (click) ="seleccionRecurso(cuatroResto.recurso1.id)"><small>{{cuatroResto.recurso1.instrucciones}}</small></ion-label>
+              </div>
+              <ion-item  class="iconos" color=transparent>
+                <ion-button *ngIf="cuatroResto.recurso1.instrucciones.length>LONGITUD_TOPE || (cuatroResto.recurso1.nombre.length>LONGITUD_TOPE_TITULO && cuatroResto.recurso1.instrucciones.length>LONGITUD_TOPE_2)" (click) ="mostrarTexto(cuatroResto.recurso1.id)">...</ion-button>
+                <ion-icon *ngIf="cuatroResto.recurso1.enlaceVideo && '' != cuatroResto.recurso1.enlaceVideo" name="play-circle-outline" (click) ="seleccionVideo(cuatroResto.recurso1.id)"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso1.recursoAdaptado && '' != cuatroResto.recurso1.recursoAdaptado" name="body-outline" (click) ="seleccionRecurso(cuatroResto.recurso1.recursoAdaptado)"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso1.favorito" name="heart-outline"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso1.favorito" name="heart" color="danger"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso1.realizado" name="checkmark-done" ></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso1.realizado" name="checkmark-done" color="primary"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso1.visto" name="eye-off-outline"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso1.visto" name="eye" color="primary"></ion-icon>
+              </ion-item>
+            </ion-col>
+            <ion-col size="5" class="card-image" (click) ="seleccionRecurso(cuatroResto.recurso1.id)">
+              <img alt="" [src]="urlImagen(cuatroResto.recurso1.id)">
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </div>
+    <div *ngIf="resto == 3">
+      <ion-item color="primary" class="botonesIzquierda ion-no-padding">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="5" class="card-image" (click) ="seleccionRecurso(cuatroResto.recurso0.id)">
+              <img alt="" [src]="urlImagen(cuatroResto.recurso0.id)">
+            </ion-col>
+            <ion-col size="7" class="texto">
+              <ion-label class="ion-text-wrap titulo" (click) ="seleccionRecurso(cuatroResto.recurso0.id)"><b>{{cuatroResto.recurso0.nombre}}</b></ion-label>
+              <div class="instrucciones">
+                <ion-label *ngIf="cuatroResto.recurso0.nombre.length<=LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTexto" (click) ="seleccionRecurso(cuatroResto.recurso0.id)"><small>{{cuatroResto.recurso0.instrucciones}}</small></ion-label>
+                <ion-label *ngIf="cuatroResto.recurso0.nombre.length>LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTextoCorto" (click) ="seleccionRecurso(cuatroResto.recurso0.id)"><small>{{cuatroResto.recurso0.instrucciones}}</small></ion-label>
+              </div>
+              <ion-item  class="iconos" color=transparent>
+                <ion-button *ngIf="cuatroResto.recurso0.instrucciones.length>LONGITUD_TOPE || (cuatroResto.recurso0.nombre.length>LONGITUD_TOPE_TITULO && cuatroResto.recurso0.instrucciones.length>LONGITUD_TOPE_2)" color="secondary" (click) ="mostrarTexto(cuatroResto.recurso0.id)">...</ion-button>
+                <ion-icon *ngIf="cuatroResto.recurso0.enlaceVideo && '' != cuatroResto.recurso0.enlaceVideo" name="play-circle-outline" (click) ="seleccionVideo(cuatroResto.recurso0.id)"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.recursoAdaptado && '' != cuatroResto.recurso0.recursoAdaptado" name="body-outline" (click) ="seleccionRecurso(cuatroResto.recurso0.recursoAdaptado)"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso0.favorito" name="heart-outline"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.favorito" name="heart" color="danger"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso0.realizado" name="checkmark-done" ></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.realizado" name="checkmark-done" color="secondary"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso0.visto" name="eye-off-outline"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.visto" name="eye" color="secondary"></ion-icon>
+              </ion-item>
+            </ion-col>
+            <!-- <ion-col size="7" class="textoTablet">
+              <ion-label class="ion-text-wrap titulo" (click) ="seleccionRecurso(cuatroResto.recurso0.id)"><h2><b>{{cuatroResto.recurso0.nombre}}</b></h2></ion-label>
+              <div class="instrucciones">
+                <ion-label *ngIf="cuatroResto.recurso0.nombre.length<=LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTexto" (click) ="seleccionRecurso(cuatroResto.recurso0.id)">{{cuatroResto.recurso0.instrucciones}}</ion-label>
+                <ion-label *ngIf="cuatroResto.recurso0.nombre.length>LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTextoCorto" (click) ="seleccionRecurso(cuatroResto.recurso0.id)">{{cuatroResto.recurso0.instrucciones}}</ion-label>
+              </div>
+              <ion-item  class="iconos" color=transparent>
+                <ion-button *ngIf="cuatroResto.recurso0.instrucciones.length>LONGITUD_TOPE || (cuatroResto.recurso0.nombre.length>LONGITUD_TOPE_TITULO && cuatroResto.recurso0.instrucciones.length>LONGITUD_TOPE_2)" color="secondary" (click) ="mostrarTexto(cuatroResto.recurso0.id)">...</ion-button>
+                <ion-icon *ngIf="cuatroResto.recurso0.enlaceVideo && '' != cuatroResto.recurso0.enlaceVideo" name="play-circle-outline" size="large" (click) ="seleccionVideo(cuatroResto.recurso0.id)"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.recursoAdaptado && '' != cuatroResto.recurso0.recursoAdaptado" name="body-outline" size="large" (click) ="seleccionRecurso(cuatroResto.recurso0.recursoAdaptado)"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso0.favorito" name="heart-outline" size="large"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.favorito" name="heart" size="large" color="danger"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso0.realizado" name="checkmark-done" size="large"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.realizado" name="checkmark-done" size="large" color="secondary"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso0.visto" name="eye-off-outline" size="large"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso0.visto" name="eye" size="large" color="secondary"></ion-icon>
+              </ion-item>
+            </ion-col> -->
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item color="secondary" class="botonesDerecha ion-no-padding">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="7" class="texto">
+              <ion-label class="ion-text-wrap titulo" (click) ="seleccionRecurso(cuatroResto.recurso1.id)"><b>{{cuatroResto.recurso1.nombre}}</b></ion-label>
+              <div class="instrucciones">
+                <ion-label *ngIf="cuatroResto.recurso1.nombre.length<=LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTexto" (click) ="seleccionRecurso(cuatroResto.recurso1.id)"><small>{{cuatroResto.recurso1.instrucciones}}</small></ion-label>
+                <ion-label *ngIf="cuatroResto.recurso1.nombre.length>LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTextoCorto" (click) ="seleccionRecurso(cuatroResto.recurso1.id)"><small>{{cuatroResto.recurso1.instrucciones}}</small></ion-label>
+              </div>
+              <ion-item  class="iconos" color=transparent>
+                <ion-button *ngIf="cuatroResto.recurso1.instrucciones.length>LONGITUD_TOPE || (cuatroResto.recurso1.nombre.length>LONGITUD_TOPE_TITULO && cuatroResto.recurso1.instrucciones.length>LONGITUD_TOPE_2)" (click) ="mostrarTexto(cuatroResto.recurso1.id)">...</ion-button>
+                <ion-icon *ngIf="cuatroResto.recurso1.enlaceVideo && '' != cuatroResto.recurso1.enlaceVideo" name="play-circle-outline" (click) ="seleccionVideo(cuatroResto.recurso1.id)"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso1.recursoAdaptado && '' != cuatroResto.recurso1.recursoAdaptado" name="body-outline" (click) ="seleccionRecurso(cuatroResto.recurso1.recursoAdaptado)"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso1.favorito" name="heart-outline"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso1.favorito" name="heart" color="danger"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso1.realizado" name="checkmark-done" ></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso1.realizado" name="checkmark-done" color="primary"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso1.visto" name="eye-off-outline"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso1.visto" name="eye" color="primary"></ion-icon>
+              </ion-item>
+            </ion-col>
+            <ion-col size="5" class="card-image" (click) ="seleccionRecurso(cuatroResto.recurso1.id)">
+              <img alt="" [src]="urlImagen(cuatroResto.recurso1.id)">
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item color="tertiary" class="botonesIzquierda ion-no-padding">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="5" class="card-image" (click) ="seleccionRecurso(cuatroResto.recurso2.id)">
+              <img alt="" [src]="urlImagen(cuatroResto.recurso2.id)">
+            </ion-col>
+            <ion-col size="7" class="texto">
+              <ion-label class="ion-text-wrap titulo" (click) ="seleccionRecurso(cuatroResto.recurso2.id)"><b>{{cuatroResto.recurso2.nombre}}</b></ion-label>
+              <div class="instrucciones">
+                <ion-label *ngIf="cuatroResto.recurso2.nombre.length<=LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTexto" (click) ="seleccionRecurso(cuatroResto.recurso2.id)"><small>{{cuatroResto.recurso2.instrucciones}}</small></ion-label>
+                <ion-label *ngIf="cuatroResto.recurso2.nombre.length>LONGITUD_TOPE_TITULO" class="ion-text-wrap instruccionesTextoCorto" (click) ="seleccionRecurso(cuatroResto.recurso2.id)"><small>{{cuatroResto.recurso2.instrucciones}}</small></ion-label>
+              </div>
+              <ion-item  class="iconos" color=transparent>
+                <ion-button *ngIf="cuatroResto.recurso2.instrucciones.length>LONGITUD_TOPE || (cuatroResto.recurso2.nombre.length>LONGITUD_TOPE_TITULO && cuatroResto.recurso2.instrucciones.length>LONGITUD_TOPE_2)" (click) ="mostrarTexto(cuatroResto.recurso2.id)">...</ion-button>
+                <ion-icon *ngIf="cuatroResto.recurso2.enlaceVideo && '' != cuatroResto.recurso2.enlaceVideo" name="play-circle-outline" (click) ="seleccionVideo(cuatroResto.recurso2.id)"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso2.recursoAdaptado && '' != cuatroResto.recurso2.recursoAdaptado" name="body-outline" (click) ="seleccionRecurso(cuatroResto.recurso2.recursoAdaptado)"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso2.favorito" name="heart-outline"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso2.favorito" name="heart" color="danger"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso2.realizado" name="checkmark-done" ></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso2.realizado" name="checkmark-done" color="primary"></ion-icon>
+                <ion-icon *ngIf="!cuatroResto.recurso2.visto" name="eye-off-outline"></ion-icon>
+                <ion-icon *ngIf="cuatroResto.recurso2.visto" name="eye" color="primary"></ion-icon>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item color="success" class="botonesDerecha ion-no-padding">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="7" class="texto"></ion-col>
+            <ion-col size="5" class="card-image"></ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </div>
+  </div>
+</ion-content>

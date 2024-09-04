@@ -1,0 +1,20 @@
+@import "../../../global.scss";
+
+#contenedor {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: auto;
+    grid-gap: 0px;
+    font-size: 100%;
+}
+
+.botones {
+    display: contents;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    ion-label {
+        font-size: 1.7em;
+    }
+}

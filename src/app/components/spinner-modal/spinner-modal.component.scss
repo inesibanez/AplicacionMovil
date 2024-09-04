@@ -1,0 +1,11 @@
+@import "../../../theme/variables.scss";
+
+
+#contenedor {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 1;
+    grid-auto-rows: max-content;
+    grid-gap: 0px;
+    background-color: var(--ion-color-primary);
+}

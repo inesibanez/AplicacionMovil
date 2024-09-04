@@ -1,0 +1,32 @@
+<ion-header *ngIf="!spinner">
+  <ion-toolbar color="primary">
+    <ion-icon name="arrow-back-outline" class="atras" (click) ="volver()" color="secondary"></ion-icon>
+    <ion-icon *ngIf="!buscarRecurso" name="search-outline" class="buscar" (click) ="buscar()" color="secondary"></ion-icon>
+    <ion-icon *ngIf="buscarRecurso" name="close-outline" class="buscar" (click) ="desbuscar()" color="secondary"></ion-icon>
+  </ion-toolbar>
+  <ion-searchbar #searchBar *ngIf="buscarRecurso" placeholder="Referencia del recurso" (ionInput)="accionBusqueda(searchBar.value)" inputmode="search" autocorrect="off" autocomplite="off" animated></ion-searchbar>
+</ion-header>
+<ion-content>
+  <div *ngIf="spinner" id="contenedorSpinner">
+    <ion-item color="primary" class="botones">
+      <ion-spinner color="secondary" name="crescent"></ion-spinner>
+    </ion-item>
+  </div>
+  
+  <div *ngIf="!spinner" id="contenedor" style="opacity: 0.9;">
+    <div *ngFor="let nivel of nivelesEducativos" class="botones">
+      <ion-item *ngIf="nivel.id == this.nivelesEducativos[0].id" color="primary" class="botones" (click) ="seleccionNivelEducativo(nivel.id)">
+        <ion-label>{{nivel.nombre}}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="nivel.id == this.nivelesEducativos[1].id" color="secondary" class="botones" (click) ="seleccionNivelEducativo(nivel.id)">
+        <ion-label>{{nivel.nombre}}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="nivel.id == this.nivelesEducativos[2].id" color="tertiary" class="botones" (click) ="seleccionNivelEducativo(nivel.id)">
+        <ion-label>{{nivel.nombre}}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="nivel.id == this.nivelesEducativos[3].id" color="success" class="botones" (click) ="seleccionNivelEducativo(nivel.id)">
+        <ion-label>{{nivel.nombre}}</ion-label>
+      </ion-item>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,14 @@
+#contenedor {
+    display: grid;
+    height: 100%;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    grid-gap: 0px;
+}
+
+ion-item {
+    display: contents;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}

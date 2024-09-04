@@ -1,0 +1,106 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+@import "theme/variables.scss";
+
+
+@media (max-width: 820px) {
+    ion-toolbar {
+        height: 30px;
+        --min-height: 30px;
+    }
+
+    .atras {
+        size: small;
+        float: left;
+        margin-left: 5px;
+        padding-top: 3px;
+    }
+    
+    .buscar {
+        size: small;
+        float: right;
+        margin-right: 5px;
+        padding-top: 3px;
+    }
+}
+
+@media (min-width: 820px) {
+    ion-toolbar {
+        height: 60px;
+        --min-height: 60px;
+        // TODO: que estos iconos sean grandes
+        .atras {
+            size: large !important;
+            float: left;
+            margin-left: 5px;
+            padding-top: 3px;
+        }
+        
+        .buscar {
+            size: large !important;
+            float: right;
+            margin-right: 5px;
+            padding-top: 3px;
+        }
+
+    }
+    
+}
+
+ion-title {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding-top: 0.05%;
+    text-transform: uppercase;
+    // Esperaba que esto variase el tamaño del texto, pero no lo ha hecho
+    text-size-adjust: auto;
+}
+
+
+
+
+.ion-text-wrap.sc-ion-label-md-h {
+    line-height: 1;
+}
+
+.botones {
+    display: contents;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 100%;
+    ion-label {
+        font-size: 2.4vw;
+        text-transform: uppercase;
+    }
+}
+
+ion-spinner {
+    margin-left: 48%;
+    margin-top: 0%;
+}

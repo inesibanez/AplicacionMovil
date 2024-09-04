@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>CONÓCENOS</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div id="contenedor">
+    <ion-item no-lines lines="none" class="texto" color="primary">
+      <ion-label>Conoce nuestro proyecto:</ion-label>
+      <br>
+    </ion-item>
+    <ion-item no-lines lines="none" class="ion-align-items-center video" color="primary">
+      <iframe [src]="urlExterior(0)" title="YouTube video player" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </ion-item>
+    <ion-item no-lines lines="none" class="texto" color="primary">
+      <br>
+      <ion-label>Accede a la versión web para profesores <a href="https://intef.es/recursos-educativos/recursos-para-el-aprendizaje-en-linea/matesgg/" color="secondary">aquí</a></ion-label>
+    </ion-item>
+    <ion-item no-lines lines="none" class="texto" color="primary">
+      <br>
+      <ion-label>¿Qué es GeoGebra?</ion-label>
+    </ion-item>
+    <ion-item no-lines lines="none" class="video ion-align-items-center" color="primary">
+      <br>
+      <iframe width="400px" height="220px" [src]="urlExterior(2)" title="YouTube video player" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+      <br>
+      <br>
+      <br>
+    </ion-item>
+    <ion-item no-lines lines="none" class="contenedorBoton ion-align-items-center" color="primary">
+      <ion-item no-lines class="boton ion-align-items-center" color="secondary" (click)="empezar()">
+        <ion-label>EMPIEZA Y JUEGA</ion-label>
+      </ion-item>
+    </ion-item>
+  </div>
+</ion-content>

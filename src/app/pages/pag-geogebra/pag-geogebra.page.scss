@@ -1,0 +1,40 @@
+#contenedor {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 1;
+    grid-auto-rows: max-content;
+    grid-gap: 0px;
+
+    .texto {
+        text-align: left;
+        ion-label {
+            a {
+                background-color: transparent;
+                color: var(--ion-color-secondary, #F29F05) !important; 
+            }
+        }
+    }
+    // .video {
+    //     align-items: center;
+    // }
+    .contenedorBoton {
+        margin-bottom: 0%;
+        align-items: center;
+        justify-content: center;
+        .boton {
+            margin-top: 3em;
+            display: flex !important;
+            margin-bottom: 3em;
+        }
+    }
+
+    ion-item {
+        display: flex;
+        iframe {
+            width: 400px;
+            height: 220px;
+        }
+        // align-items: center;
+        // justify-content: center;
+    }
+}

@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-icon name="arrow-back-outline" class="atras" (click) ="volver()" color="secondary"></ion-icon>
+    <ion-icon *ngIf="!buscarRecurso" name="search-outline" class="buscar" (click) ="buscar()" color="secondary"></ion-icon>
+    <ion-icon *ngIf="buscarRecurso" name="close-outline" class="buscar" (click) ="desbuscar()" color="secondary"></ion-icon>
+    <ion-title><small>{{ clase.nombre }}</small></ion-title>
+  </ion-toolbar>
+  <ion-searchbar #searchBar *ngIf="buscarRecurso" placeholder="Referencia del recurso" (ionInput)="accionBusqueda(searchBar.value)" inputmode="search" autocorrect="off" autocomplite="off" animated></ion-searchbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="spinner" id="contenedorSpinner">
+    <ion-item color="primary" class="botones">
+      <ion-spinner color="secondary" name="crescent"></ion-spinner>
+    </ion-item>
+  </div>
+  <div *ngIf="!spinner" id="contenedor" style="opacity: 0.9;">
+    <div *ngFor="let bloque of bloques" class="botones">
+      <ion-item *ngIf="bloque.id == this.bloques[0].id || bloque.id == this.bloques[6].id;" color="primary" class="botones" (click) ="seleccionBloque(bloque.id)">
+        <ion-label class="ion-text-wrap">{{bloque.nombre}}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="bloque.id == this.bloques[1].id || bloque.id == this.bloques[7].id" color="secondary" class="botones" (click) ="seleccionBloque(bloque.id)">
+        <ion-label class="ion-text-wrap">{{bloque.nombre}}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="bloque.id == this.bloques[2].id || bloque.id == this.bloques[4].id" color="tertiary" class="botones" (click) ="seleccionBloque(bloque.id)">
+        <ion-label class="ion-text-wrap">{{bloque.nombre}}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="bloque.id == this.bloques[3].id || bloque.id == this.bloques[5].id" color="success" class="botones" (click) ="seleccionBloque(bloque.id)">
+        <ion-label class="ion-text-wrap">{{bloque.nombre}}</ion-label>
+      </ion-item>
+    </div>
+  </div>
+</ion-content>

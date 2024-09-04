@@ -1,0 +1,51 @@
+<ion-content>
+  <div id="contenedor">
+    <ion-item color="primary" class="columna">
+        <ion-grid class="iconos">
+          <ion-row class="superior">
+            <ion-col>
+              <ion-icon size="large" name="arrow-back-outline" (click) ="volver()" color="secondary"></ion-icon>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="recurso.enlaceVideo && '' != recurso.enlaceVideo"  class="intermedios">
+            <ion-col>
+              <ion-icon  name="play-circle-outline" size="large" (click) ="irVideo()"></ion-icon>
+            </ion-col>
+          </ion-row>
+          <ion-row  class="intermedios">
+            <ion-col>
+              <ion-icon *ngIf="!recurso.favorito" name="heart-outline" size="large" (click) ="cambioFavorito(recurso.id)"></ion-icon>
+              <ion-icon *ngIf="recurso.favorito" name="heart" size="large" color="danger" (click) ="cambioFavorito(recurso.id)"></ion-icon>
+            </ion-col>
+          </ion-row>
+          <ion-row  class="intermedios">
+            <ion-col>
+              <ion-icon *ngIf="!recurso.realizado" name="checkmark-done" size="large" (click) ="cambioRealizado(recurso.id)"></ion-icon>
+              <ion-icon *ngIf="recurso.realizado" name="checkmark-done" size="large" color="secondary" (click) ="cambioRealizado(recurso.id)"></ion-icon>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="recurso.recursoAdaptado && '' != recurso.recursoAdaptado" class="intermedios">
+            <ion-col>
+              <ion-icon  name="body-outline" size="large" (click) ="irRecursoAdaptado(recurso.recursoAdaptado)"></ion-icon>
+            </ion-col>
+          </ion-row>
+          <!-- <ion-row  class="intermedios">
+            <ion-col>
+              <ion-icon name="sync-outline" size="large" color="secondary" (click) ="recargarRecurso()"></ion-icon>
+            </ion-col>
+          </ion-row> -->
+          <ion-row class="inferior">
+            <ion-col>
+              <ion-icon name="information-circle-outline" size="large" (click) ="presentModal()" color="secondary"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+    </ion-item>
+    <ion-item class="recurso" width="100%" height="100%">
+      <iframe scrolling="no" title="recurso.nombre" [src]="urlDelRecurso | safe" style="border:0px;"> </iframe>
+    </ion-item>
+  </div>
+</ion-content>
+
+
+

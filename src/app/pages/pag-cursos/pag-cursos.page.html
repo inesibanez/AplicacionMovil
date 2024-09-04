@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar  color="primary">
+    <ion-icon name="arrow-back-outline" class="atras" (click) ="volver()" color="secondary"></ion-icon>
+    <ion-icon *ngIf="!buscarRecurso" name="search-outline" class="buscar" (click) ="buscar()" color="secondary"></ion-icon>
+    <ion-icon *ngIf="buscarRecurso" name="close-outline" class="buscar" (click) ="desbuscar()" color="secondary"></ion-icon>
+    <ion-title><small>{{ nivelEducativo.nombre }}</small></ion-title>
+  </ion-toolbar>
+  <ion-searchbar #searchBar *ngIf="buscarRecurso" placeholder="Referencia del recurso" (ionInput)="accionBusqueda(searchBar.value)" inputmode="search" autocorrect="off" autocomplite="off" animated></ion-searchbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="spinner" id="contenedorSpinner">
+    <ion-item color="primary" class="botones">
+      <ion-spinner color="secondary" name="crescent"></ion-spinner>
+    </ion-item>
+  </div>
+  <div *ngIf="idNivel == 'I' && !spinner" id="contenedorInfantil" style="opacity: 0.9;">
+    <div *ngFor="let curso of cursos" class="botones">
+      <ion-item *ngIf="curso.id == this.cursos[0].id || curso.id == this.cursos[2].id; else otroColor" color="primary" class="botones" (click) ="seleccionCurso(curso.id)">
+        <ion-label>{{curso.nombre}}</ion-label>
+      </ion-item>
+      <ng-template #otroColor class="botones">
+        <ion-item color="secondary" class="botones" (click) ="seleccionCurso(curso.id)">
+          <ion-label>{{curso.nombre}}</ion-label>
+        </ion-item>
+      </ng-template>
+    </div>
+  </div>
+  <div *ngIf="idNivel == 'P' && !spinner" id="contenedorPrimaria" style="opacity: 0.9;">
+    <div *ngFor="let curso of cursos" class="botones">
+      <ion-item *ngIf="curso.id == this.cursos[0].id || curso.id == this.cursos[2].id || curso.id == this.cursos[4].id; else otroColor" color="primary" class="botones" (click) ="seleccionCurso(curso.id)">
+        <ion-label>{{curso.nombre}}</ion-label>
+      </ion-item>
+      <ng-template #otroColor class="botones">
+        <ion-item color="secondary" class="botones" (click) ="seleccionCurso(curso.id)">
+          <ion-label>{{curso.nombre}}</ion-label>
+        </ion-item>
+      </ng-template>
+    </div>
+  </div>
+  <div *ngIf="idNivel == 'E' && !spinner" id="contenedorESO" style="opacity: 0.9;">
+    <div *ngFor="let curso of cursos" class="botones">
+      <ion-item *ngIf="curso.id == this.cursos[0].id || curso.id == this.cursos[3].id; else otroColor" color="primary" class="botones" (click) ="seleccionCurso(curso.id)">
+        <ion-label>{{curso.nombre}}</ion-label>
+      </ion-item>
+      <ng-template #otroColor class="botones">
+        <ion-item color="secondary" class="botones" (click) ="seleccionCurso(curso.id)">
+          <ion-label>{{curso.nombre}}</ion-label>
+        </ion-item>
+      </ng-template>
+    </div>
+  </div>
+  <div *ngIf="idNivel == 'B' && !spinner" id="contenedorBach" style="opacity: 0.9;">
+    <div *ngFor="let curso of cursos" class="botones">
+      <ion-item *ngIf="curso.id == this.cursos[0].id; else otroColor" color="primary" class="botones" (click) ="seleccionCurso(curso.id)">
+        <ion-label>{{curso.nombre}}</ion-label>
+      </ion-item>
+      <ng-template #otroColor class="botones">
+        <ion-item color="secondary" class="botones" (click) ="seleccionCurso(curso.id)">
+          <ion-label>{{curso.nombre}}</ion-label>
+        </ion-item>
+      </ng-template>
+    </div>
+  </div>
+</ion-content>
